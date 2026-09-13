@@ -1,0 +1,31 @@
+<Project>
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+
+    <!-- The floor for the xUnit.net v3 packages we build against. Default interface methods
+         and the discoverer extensibility points used here are stable across v3, but 4.0.1 is
+         the first release this package has actually been verified against. -->
+    <XunitVersion>4.0.1</XunitVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Authors>ryuchan00</Authors>
+    <Copyright>Copyright (C) ryuchan00</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/ryuchan00/XunitSharedExamples</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/ryuchan00/XunitSharedExamples</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>xunit;xunit.v3;testing;shared-examples;rspec;contract-tests</PackageTags>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+</Project>

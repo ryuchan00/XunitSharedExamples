@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Xunit.SharedExamples/Xunit.SharedExamples.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Xunit.SharedExamples.Tests/Xunit.SharedExamples.Tests.csproj" />
+  </Folder>
+</Solution>
