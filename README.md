@@ -1,5 +1,8 @@
 # Xunit.SharedExamples
 
+[![CI](https://github.com/ryuchan00/XunitSharedExamples/actions/workflows/ci.yml/badge.svg)](https://github.com/ryuchan00/XunitSharedExamples/actions/workflows/ci.yml)
+[![NuGet](https://img.shields.io/nuget/v/Xunit.SharedExamples.svg)](https://www.nuget.org/packages/Xunit.SharedExamples)
+
 RSpec-style shared examples for [xUnit.net v3](https://xunit.net/), built on C# default
 interface methods.
 
