@@ -45,6 +45,8 @@ ListSpec behaves like a collection: starts out empty
 ListSpec behaves like a collection: contains an item once it has been added
 ```
 
+Introduction article (Japanese): [xUnit.net v3 で RSpec の shared examples を書けるようにした](https://leokun0210.hatenablog.com/entry/xunit-shared-examples)
+
 ## Installation
 
 ```
