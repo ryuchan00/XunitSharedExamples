@@ -1,8 +1,8 @@
 name: Release
 
-# v0.1.0 のようなタグを push すると、タグのバージョンでパッケージを作り nuget.org に公開する。
-# nuget.org 側で Trusted Publishing のポリシー（このリポジトリと release.yml）を登録し、
-# リポジトリの secret NUGET_USER に nuget.org のユーザー名を入れておく。
+# Pushing a tag such as v0.1.0 builds the package at that version and publishes it to nuget.org.
+# nuget.org must have a Trusted Publishing policy for this repository and release.yml, and the
+# repository secret NUGET_USER must hold the nuget.org user name.
 
 on:
   push:
