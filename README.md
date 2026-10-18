@@ -3,6 +3,8 @@
 [![CI](https://github.com/ryuchan00/XunitSharedExamples/actions/workflows/ci.yml/badge.svg)](https://github.com/ryuchan00/XunitSharedExamples/actions/workflows/ci.yml)
 [![NuGet](https://img.shields.io/nuget/v/Xunit.SharedExamples.svg)](https://www.nuget.org/packages/Xunit.SharedExamples)
 
+English | [日本語](https://github.com/ryuchan00/XunitSharedExamples/blob/main/README.ja.md)
+
 RSpec-style shared examples for [xUnit.net v3](https://xunit.net/), built on C# default
 interface methods.
 
