@@ -29,9 +29,10 @@ jobs:
         env:
           EXPECTED_TESTS: 44
         run: |
+          # Not anchored at line start: in CI the runner prefixes the line with an ANSI color escape.
           for mode in off on; do
             dotnet test --configuration Release --pre-enumerate-theories "$mode" | tee test.log
-            grep -Eq "^[[:space:]]+total: $EXPECTED_TESTS[[:space:]]*$" test.log ||
+            grep -Eq "[[:space:]]total: $EXPECTED_TESTS[[:space:]]*$" test.log ||
               { echo "::error::expected exactly $EXPECTED_TESTS tests with pre-enumeration $mode"; exit 1; }
           done
       - run: dotnet pack src/Xunit.SharedExamples --configuration Release --output artifacts
