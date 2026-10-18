@@ -147,6 +147,40 @@ async Task StartsOutEmptyAsync()
 }
 ```
 
+## Data-driven examples
+
+`[SharedTheory]` is the shared counterpart of `[Theory]`. It takes the usual data attributes,
+and each data row becomes its own test of the including class:
+
+```csharp
+[SharedExamples("a collection of numbers")]
+public interface INumberCollectionExamples<TCollection> : ISharedExamplesFor<TCollection>
+    where TCollection : ICollection<int>
+{
+    [SharedTheory("contains an item once it has been added")]
+    [InlineData(0)]
+    [InlineData(42)]
+    void ContainsAddedItem(int item)
+    {
+        var subject = CreateSubject();
+
+        subject.Add(item);
+
+        Assert.Contains(item, subject);
+    }
+}
+```
+
+```
+NumberListSpec behaves like a collection of numbers: contains an item once it has been added(item: 0)
+NumberListSpec behaves like a collection of numbers: contains an item once it has been added(item: 42)
+```
+
+`[MemberData]` looks up its member on the interface that declares the example, so put the
+data in a static member of that interface. Rows are named the same way whether or not
+theories are pre-enumerated during discovery. As with `[Theory]`, a row that sets its own
+`TestDisplayName` (through `TheoryDataRow`) is shown under that name alone.
+
 ## Examples without a subject
 
 `ISharedExamplesFor<TSubject>` is a convention, not a requirement. Examples that need no
@@ -180,7 +214,7 @@ static class TestSetup
 ```
 
 The context carries the including class's name, the name from `[SharedExamples]`, and the
-description from `[SharedExample]`. The example above produces
+description from `[SharedExample]` or `[SharedTheory]`. The example above produces
 `ListSpec (a collection) starts out empty`.
 
 ## Requirements
@@ -194,7 +228,7 @@ description from `[SharedExample]`. The example above produces
 
 ## Notes
 
-Two sets of shared examples may declare examples with the same method name. xUnit.net derives
+Two sets of shared examples may declare examples (or theories) with the same method name. xUnit.net derives
 a test method's unique ID from the class ID plus the method name, and silently drops test
 cases whose IDs collide, so this package qualifies the ID with the declaring interface to keep
 such examples distinct.

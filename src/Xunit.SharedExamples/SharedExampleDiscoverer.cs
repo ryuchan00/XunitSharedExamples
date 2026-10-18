@@ -43,7 +43,7 @@ public class SharedExampleDiscoverer : FactDiscoverer
 		);
 	}
 
-	static IXunitTestMethod QualifyByDeclaringInterface(IXunitTestMethod testMethod)
+	internal static IXunitTestMethod QualifyByDeclaringInterface(IXunitTestMethod testMethod)
 	{
 		var declaringType = testMethod.Method.DeclaringType;
 
@@ -53,7 +53,7 @@ public class SharedExampleDiscoverer : FactDiscoverer
 		return new XunitTestMethod(
 			testMethod.TestClass,
 			testMethod.Method,
-			[],
+			testMethod.TestMethodArguments,
 			uniqueID: UniqueIDGenerator.ForTestMethod(
 				testMethod.TestClass.UniqueID,
 				declaringType.FullName + "." + testMethod.MethodName

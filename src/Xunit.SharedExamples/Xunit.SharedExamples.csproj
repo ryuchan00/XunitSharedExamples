@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <PackageId>Xunit.SharedExamples</PackageId>
-    <Version>0.1.0</Version>
+    <Version>0.2.0</Version>
     <Description>RSpec-style shared examples for xUnit.net v3, built on default interface methods. Declare a set of examples once as an interface, then include them in any number of test classes by implementing it.</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>

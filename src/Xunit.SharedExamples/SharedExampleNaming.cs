@@ -28,7 +28,17 @@ public static class SharedExampleNaming
 	public static string GetDisplayName(
 		IXunitTestMethod testMethod,
 		IFactAttribute factAttribute,
-		string defaultDisplayName)
+		string defaultDisplayName) =>
+			GetSharedDisplayName(testMethod, factAttribute) ?? defaultDisplayName;
+
+	/// <summary>
+	/// Gets the display name for a test method from a <see cref="SharedExamplesAttribute"/>
+	/// interface, or <c>null</c> when the method does not come from one. For a theory this is
+	/// the name before the arguments of a data row are appended.
+	/// </summary>
+	internal static string? GetSharedDisplayName(
+		IXunitTestMethod testMethod,
+		IFactAttribute factAttribute)
 	{
 		ArgumentNullException.ThrowIfNull(testMethod);
 		ArgumentNullException.ThrowIfNull(factAttribute);
@@ -37,10 +47,10 @@ public static class SharedExampleNaming
 			testMethod.Method.DeclaringType?.GetCustomAttribute<SharedExamplesAttribute>();
 
 		if (sharedExamples is null)
-			return defaultDisplayName;
+			return null;
 
 		var description =
-			(factAttribute as SharedExampleAttribute)?.Description
+			(factAttribute as ISharedExampleAttribute)?.Description
 				?? factAttribute.DisplayName
 				?? testMethod.MethodName;
 

@@ -20,5 +20,18 @@ jobs:
       - uses: actions/setup-dotnet@v6
         with:
           global-json-file: global.json
-      - run: dotnet test --configuration Release
+      # xUnit.net silently drops test cases whose unique IDs collide, so a regression in this
+      # package shows up as missing tests rather than failures. Check the exact count (update
+      # it when adding tests) under both theory discovery paths: data enumerated at run time,
+      # and pre-enumerated during discovery.
+      - name: Test
+        shell: bash
+        env:
+          EXPECTED_TESTS: 44
+        run: |
+          for mode in off on; do
+            dotnet test --configuration Release --pre-enumerate-theories "$mode" | tee test.log
+            grep -Eq "^[[:space:]]+total: $EXPECTED_TESTS[[:space:]]*$" test.log ||
+              { echo "::error::expected exactly $EXPECTED_TESTS tests with pre-enumeration $mode"; exit 1; }
+          done
       - run: dotnet pack src/Xunit.SharedExamples --configuration Release --output artifacts

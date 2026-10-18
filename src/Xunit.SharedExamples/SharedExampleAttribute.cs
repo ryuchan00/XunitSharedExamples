@@ -20,7 +20,7 @@ public class SharedExampleAttribute(
 	string? description = null,
 	[CallerFilePath] string? sourceFilePath = null,
 	[CallerLineNumber] int sourceLineNumber = -1) :
-		FactAttribute(sourceFilePath, sourceLineNumber)
+		FactAttribute(sourceFilePath, sourceLineNumber), ISharedExampleAttribute
 {
 	/// <summary>
 	/// Gets the human-readable description of the example.
