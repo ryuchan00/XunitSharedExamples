@@ -47,6 +47,10 @@ ListSpec behaves like a collection: starts out empty
 ListSpec behaves like a collection: contains an item once it has been added
 ```
 
+出力のクラス名は名前空間付きです。
+名前空間 `MyApp.Tests` の `ListSpec` なら `MyApp.Tests.ListSpec behaves like …` になります。
+変える方法は[表示名の変更](#表示名の変更)を参照してください。
+
 紹介記事: [xUnit.net v3 で RSpec の shared examples を書けるようにした](https://leokun0210.hatenablog.com/entry/xunit-shared-examples)
 
 ## インストール
@@ -228,6 +232,11 @@ context には、取り込む側のクラス名、`[SharedExamples]` の名前�
 2 つのセットに、同じメソッド名のテスト（`[SharedTheory]` を含む）があってもかまいません。
 xUnit.net はテストメソッドの ID を「クラスの ID + メソッド名」から作り、ID が重複したテストを警告なしに除外します。
 そこでこのパッケージは、宣言したインターフェースを ID に含めて、両方のテストが実行されるようにしています。
+
+ただし、対象は `[SharedExample]` と `[SharedTheory]` を付けたテストだけです。
+共有インターフェースに通常の `[Fact]` や `[Theory]` を書くと、ID は xUnit.net の既定のままです。
+取り込んだ 2 つのインターフェースに同じメソッド名のものがあると、片方が警告なしに実行されません。
+共有インターフェースのテストには、すべて共有用の属性を付けてください。
 
 ## ライセンス
 

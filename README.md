@@ -47,6 +47,10 @@ ListSpec behaves like a collection: starts out empty
 ListSpec behaves like a collection: contains an item once it has been added
 ```
 
+The class name in the output is fully qualified: a `ListSpec` in namespace `MyApp.Tests` shows
+up as `MyApp.Tests.ListSpec behaves like …`. See [Customizing display names](#customizing-display-names)
+to change that.
+
 Introduction article (Japanese): [xUnit.net v3 で RSpec の shared examples を書けるようにした](https://leokun0210.hatenablog.com/entry/xunit-shared-examples)
 
 ## Installation
@@ -234,6 +238,11 @@ Two sets of shared examples may declare examples (or theories) with the same met
 a test method's unique ID from the class ID plus the method name, and silently drops test
 cases whose IDs collide, so this package qualifies the ID with the declaring interface to keep
 such examples distinct.
+
+This applies only to examples marked `[SharedExample]` or `[SharedTheory]`. A plain `[Fact]` or
+`[Theory]` declared on a shared interface keeps xUnit.net's unqualified ID, so if two included
+interfaces declare one with the same method name, one of them silently does not run. Use the
+shared attributes for every test on a shared interface.
 
 ## License
 

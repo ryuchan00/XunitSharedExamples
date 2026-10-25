@@ -20,7 +20,13 @@ jobs:
       - uses: actions/setup-dotnet@v6
         with:
           global-json-file: global.json
-      - run: dotnet test --configuration Release
+      - name: Check the tag matches the project version
+        run: |
+          version=$(sed -n 's:.*<Version>\(.*\)</Version>.*:\1:p' src/Xunit.SharedExamples/Xunit.SharedExamples.csproj)
+          [ "v$version" = "$GITHUB_REF_NAME" ] ||
+            { echo "::error::tag $GITHUB_REF_NAME does not match <Version>$version</Version>"; exit 1; }
+      - name: Test
+        run: bash .github/scripts/test.sh
       - name: Pack
         run: dotnet pack src/Xunit.SharedExamples --configuration Release --output artifacts -p:Version=${GITHUB_REF_NAME#v}
       - name: NuGet login (Trusted Publishing)

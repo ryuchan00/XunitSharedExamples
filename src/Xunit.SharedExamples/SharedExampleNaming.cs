@@ -12,7 +12,14 @@ public static class SharedExampleNaming
 	/// Gets or sets the formatter used to build the display name of a shared example. The
 	/// default produces <c>Namespace.ListSpec behaves like a collection: is empty when created</c>.
 	/// </summary>
-	public static Func<SharedExampleNameContext, string> Formatter { get; set; } =
+	/// <exception cref="ArgumentNullException">The value is <c>null</c>.</exception>
+	public static Func<SharedExampleNameContext, string> Formatter
+	{
+		get => formatter;
+		set => formatter = value ?? throw new ArgumentNullException(nameof(value));
+	}
+
+	static Func<SharedExampleNameContext, string> formatter =
 		context => string.Format(
 			CultureInfo.CurrentCulture,
 			"{0} behaves like {1}: {2}",

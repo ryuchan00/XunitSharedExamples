@@ -56,10 +56,16 @@ public class SharedExampleDiscoverer : FactDiscoverer
 			testMethod.TestMethodArguments,
 			uniqueID: UniqueIDGenerator.ForTestMethod(
 				testMethod.TestClass.UniqueID,
-				declaringType.FullName + "." + testMethod.MethodName
+				QualifiedMethodName(declaringType, testMethod.MethodName)
 			)
 		);
 	}
+
+	// Type.ToString() names closed generic types by their type arguments alone, whereas FullName
+	// adds each argument's assembly-qualified name, so IDs built from it would change whenever an
+	// argument's assembly version does (for example, on a runtime upgrade).
+	internal static string QualifiedMethodName(Type declaringType, string methodName) =>
+		declaringType + "." + methodName;
 
 	static Dictionary<string, HashSet<string>> ToReadWrite(IReadOnlyDictionary<string, IReadOnlyCollection<string>> traits)
 	{
