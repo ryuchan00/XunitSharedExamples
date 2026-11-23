@@ -51,7 +51,7 @@ public interface ICollectionExamples<TCollection> : ISharedExamplesFor<TCollecti
 /// </summary>
 [SharedExamples("a set")]
 public interface ISetExamples<TSet> : ISharedExamplesFor<TSet>
-	where TSet : ICollection<int>
+	where TSet : ISet<int>
 {
 	[SharedExample("ignores an item that was already added")]
 	void IgnoresDuplicates()
