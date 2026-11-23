@@ -38,6 +38,12 @@ public class ListSpec : ICollectionExamples<List<int>>
 {
     public List<int> CreateSubject() => [];
 }
+
+// it_behaves_like "a collection"
+public class HashSetSpec : ICollectionExamples<HashSet<int>>
+{
+    public HashSet<int> CreateSubject() => [];
+}
 ```
 
 Test output:
@@ -45,7 +51,17 @@ Test output:
 ```
 ListSpec behaves like a collection: starts out empty
 ListSpec behaves like a collection: contains an item once it has been added
+HashSetSpec behaves like a collection: starts out empty
+HashSetSpec behaves like a collection: contains an item once it has been added
 ```
+
+The two examples written on the interface run once for every class that includes it. The
+including class only supplies `CreateSubject()`, which is called once per example, so no
+two examples share a subject.
+
+The `where TCollection : ICollection<int>` constraint limits the examples to implementations
+of `ICollection<int>`. The compiler checks that every subject has that type, which is also
+what lets the examples call members such as `Add`.
 
 The class name in the output is fully qualified: a `ListSpec` in namespace `MyApp.Tests` shows
 up as `MyApp.Tests.ListSpec behaves like …`. See [Customizing display names](#customizing-display-names)
@@ -79,14 +95,43 @@ Requires xUnit.net v3 (4.0.1 or later) and a .NET (Core) target. See
 ## Including more than one set
 
 A class can behave like several things at once, which is where the interface-based approach
-pays off over an abstract base class:
+pays off over an abstract base class.
+
+For example, "adding the same item twice keeps only one" is a behaviour of `ISet<int>`, so it
+goes into a separate set:
 
 ```csharp
+[SharedExamples("a set")]
+public interface ISetExamples<TSet> : ISharedExamplesFor<TSet>
+    where TSet : ISet<int>
+{
+    [SharedExample("ignores an item that was already added")]
+    void IgnoresDuplicates()
+    {
+        var subject = CreateSubject();
+
+        subject.Add(7);
+        subject.Add(7);
+
+        Assert.Single(subject);
+    }
+}
+
 public class HashSetSpec : ICollectionExamples<HashSet<int>>, ISetExamples<HashSet<int>>
 {
     public HashSet<int> CreateSubject() => [];
 }
 ```
+
+```
+HashSetSpec behaves like a collection: starts out empty
+HashSetSpec behaves like a collection: contains an item once it has been added
+HashSetSpec behaves like a set: ignores an item that was already added
+```
+
+`List<int>` does not implement `ISet<int>`, so adding `ISetExamples<List<int>>` to `ListSpec`
+is a compile error (CS0311). The generic constraints decide which classes can include which
+sets.
 
 ## Nested contexts
 
