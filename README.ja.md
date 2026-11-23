@@ -38,6 +38,12 @@ public class ListSpec : ICollectionExamples<List<int>>
 {
     public List<int> CreateSubject() => [];
 }
+
+// it_behaves_like "a collection"
+public class HashSetSpec : ICollectionExamples<HashSet<int>>
+{
+    public HashSet<int> CreateSubject() => [];
+}
 ```
 
 テストの出力:
@@ -45,7 +51,16 @@ public class ListSpec : ICollectionExamples<List<int>>
 ```
 ListSpec behaves like a collection: starts out empty
 ListSpec behaves like a collection: contains an item once it has been added
+HashSetSpec behaves like a collection: starts out empty
+HashSetSpec behaves like a collection: contains an item once it has been added
 ```
+
+インターフェースに書いた 2 本のテストが、取り込んだクラスごとに実行されます。
+テストクラスに書くのは、テスト対象を作る `CreateSubject()` だけです。
+`CreateSubject()` はテストごとに 1 回呼ばれるので、テスト同士でテスト対象を共有しません。
+
+`where TCollection : ICollection<int>` の制約により、取り込めるのは `ICollection<int>` の実装だけです。
+テスト対象がその型であることはコンパイル時に確かめられ、共有テストの中で `Add` などのメンバーを呼べます。
 
 出力のクラス名は名前空間付きです。
 名前空間 `MyApp.Tests` の `ListSpec` なら `MyApp.Tests.ListSpec behaves like …` になります。
@@ -81,12 +96,39 @@ xUnit.net v3（4.0.1 以降）と .NET (Core) のターゲットが必要です�
 1 つのクラスで、複数のインターフェースを実装できます。
 抽象基底クラスは 1 つしか継承できないので、ここがインターフェースで書く利点です。
 
+たとえば「同じ値を 2 回追加しても 1 つしか入らない」は `ISet<int>` の振る舞いなので、別のセットに書きます。
+
 ```csharp
+[SharedExamples("a set")]
+public interface ISetExamples<TSet> : ISharedExamplesFor<TSet>
+    where TSet : ISet<int>
+{
+    [SharedExample("ignores an item that was already added")]
+    void IgnoresDuplicates()
+    {
+        var subject = CreateSubject();
+
+        subject.Add(7);
+        subject.Add(7);
+
+        Assert.Single(subject);
+    }
+}
+
 public class HashSetSpec : ICollectionExamples<HashSet<int>>, ISetExamples<HashSet<int>>
 {
     public HashSet<int> CreateSubject() => [];
 }
 ```
+
+```
+HashSetSpec behaves like a collection: starts out empty
+HashSetSpec behaves like a collection: contains an item once it has been added
+HashSetSpec behaves like a set: ignores an item that was already added
+```
+
+`List<int>` は `ISet<int>` を実装していないので、`ListSpec` に `ISetExamples<List<int>>` を足すとコンパイルエラー（CS0311）になります。
+どのクラスにどのセットを取り込めるかは、型パラメーターの制約で決まります。
 
 ## 入れ子の context
 
